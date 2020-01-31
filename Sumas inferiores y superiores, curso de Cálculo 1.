@@ -1,0 +1,117 @@
+import matplotlib
+import numpy as np
+from matplotlib import FuncAnimation
+#la función es f(x)=x^2
+
+n=10
+m=10
+a=-10
+b=7
+
+#partición del intervalo [a,b]
+
+Delta_P=(b-a)/n
+P_1=[np.round(a+(i*Delta_P),4) for i in np.arange(0,n+1,1)]
+
+#minimo cada subintervalo
+
+Delta_P_s = (P_1[1]-P_1[0])/m
+P_1_s = [np.round(a+(i*Delta_P_s),4) for i in np.arange(0,(m*n)+1,1)]
+Min = []
+Max=[]
+
+Lista_valuaciones = []
+
+
+for i in P_1[1:]:
+    F_valuada_en_cada_P_1_s=[]
+    for k in P_1_s:
+        if k <= i and (i)-Delta_P <= k:#aqui va la funcion
+            F_valuada_en_cada_P_1_s.append([k,k**2])
+        else:
+            continue
+    Lista_valuaciones.append(F_valuada_en_cada_P_1_s)
+
+Minimo=[]
+Maximo=[]
+X_min=[]
+X_max=[]
+G=[]
+for i in Lista_valuaciones:
+    G_1=[]
+    for k in i:
+        G_1.append(k[1])
+    G.append(G_1)
+for i in G:
+    c=min(i)
+    Minimo.append(c)
+    d=max(i)
+    Maximo.append(d)
+p=0
+valores_x_min=[]
+valores_x_max=[]
+for i in Lista_valuaciones:
+    for k in i:
+        if Minimo[p] == k[1]:
+            valores_x_min.append(k[0])
+        elif Maximo[p] == k[1]:
+            valores_x_max.append(k[0])
+    p+=1
+   
+print(valores_x_min, valores_x_max)
+    
+
+#gráfica
+
+##Ceros
+Cero=[]
+for i in range(len(valores_x_min)):
+    Cero.append(0)
+print(len(Cero),len(valores_x_min))
+X=np.arange(a,b,0.01)
+#aqui va de nuevo la funcion
+Y=[i**2 for i in X]
+#limites
+#plt.xlim(a,b)
+#plt.ylim(0,1)
+fig, (A,B) = plt.subplots(1,2)
+
+A.scatter(valores_x_min, Cero,c='red',marker='.')
+B.scatter(valores_x_max, Cero,c='green',marker='.')
+A.plot(X,Y)
+B.plot(X,Y)
+
+A.axhline(y=0,linewidth = 0.5)
+B.axhline(y=0,linewidth = 0.5)
+
+
+###rectangulos
+##aqui de nuevo hay dependencia de la función.
+q=0
+r=0
+for k in valores_x_min:
+    rect_min_i = matplotlib.patches.Rectangle((P_1[q],0), Delta_P, k**2, color='yellow')
+    A.add_patch(rect_min_i)
+    q+=1
+for t in valores_x_max:
+    rect_max_i = matplotlib.patches.Rectangle((P_1[r],0), Delta_P, t**2, color='orange')
+    B.add_patch(rect_max_i)
+    r+=1
+fig_2, (C,D) = plt.subplots(1,2)
+C.scatter(valores_x_min, Cero,c='red',marker='.')
+D.scatter(valores_x_max, Cero,c='green',marker='.')
+C.plot(X,Y)
+D.plot(X,Y)
+s=0
+t=0
+def nuevaframe(i):
+    for k in valores_x_min:
+        rect_min_i = matplotlib.patches.Rectangle((P_1[q],0), Delta_P, k**2, color='yellow')
+        C.add_patch(rect_min_i)
+        s+=1
+    for t in valores_x_max:
+        rect_max_i = matplotlib.patches.Rectangle((P_1[r],0), Delta_P, t**2, color='orange')
+        D.add_patch(rect_max_i)
+        t+=1
+    
+animacion = FuncAnimation(fig_2, nuevaframe, frame = np.arange(0,len(valores_x_min,1))) 
