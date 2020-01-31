@@ -1,6 +1,3 @@
-import matplotlib
-import numpy as np
-from matplotlib import FuncAnimation
 #la función es f(x)=x^2
 
 n=10
@@ -58,7 +55,7 @@ for i in Lista_valuaciones:
             valores_x_max.append(k[0])
     p+=1
    
-print(valores_x_min, valores_x_max)
+##print(valores_x_min, valores_x_max)
     
 
 #gráfica
@@ -96,22 +93,4 @@ for k in valores_x_min:
 for t in valores_x_max:
     rect_max_i = matplotlib.patches.Rectangle((P_1[r],0), Delta_P, t**2, color='orange')
     B.add_patch(rect_max_i)
-    r+=1
-fig_2, (C,D) = plt.subplots(1,2)
-C.scatter(valores_x_min, Cero,c='red',marker='.')
-D.scatter(valores_x_max, Cero,c='green',marker='.')
-C.plot(X,Y)
-D.plot(X,Y)
-s=0
-t=0
-def nuevaframe(i):
-    for k in valores_x_min:
-        rect_min_i = matplotlib.patches.Rectangle((P_1[q],0), Delta_P, k**2, color='yellow')
-        C.add_patch(rect_min_i)
-        s+=1
-    for t in valores_x_max:
-        rect_max_i = matplotlib.patches.Rectangle((P_1[r],0), Delta_P, t**2, color='orange')
-        D.add_patch(rect_max_i)
-        t+=1
-    
-animacion = FuncAnimation(fig_2, nuevaframe, frame = np.arange(0,len(valores_x_min,1))) 
+    r+=1 
