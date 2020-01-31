@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import matplotlib
+import numpy as np
 #la función es f(x)=x^2
 
 n=10
@@ -93,4 +96,4 @@ for k in valores_x_min:
 for t in valores_x_max:
     rect_max_i = matplotlib.patches.Rectangle((P_1[r],0), Delta_P, t**2, color='orange')
     B.add_patch(rect_max_i)
-    r+=1 
+    r+=1
