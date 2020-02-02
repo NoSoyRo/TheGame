@@ -97,3 +97,100 @@ for t in valores_x_max:
     rect_max_i = matplotlib.patches.Rectangle((P_1[r],0), Delta_P, t**2, color='orange')
     B.add_patch(rect_max_i)
     r+=1
+
+###########################################################segunda parte del código#############################################
+    
+fig_2, (C,D) = plt.subplots(1,2)
+
+##se usa a y b como los límites de los intervalos del inicio del código.
+##preguntar pq la norma debe ser menor a la longitud de todo el intervalo.
+norma_de_la_particion = 0.5
+cantidad_elementos_partición = 10
+
+x_3 = rand.uniform(a,b)
+
+particion=[a,b,x_3]
+
+if norma_de_la_particion >= b-a:
+    print("no vro, no puede ser lo que quieres hacer jeje")
+elif norma_de_la_particion <= b-a and norma_de_la_particion <= b-x_3 and norma_de_la_particion <= x_3-a:
+    decision_1 = rand.choice([True, False])
+    if decision_1 == True:
+        x_4 = x_3 + norma_de_la_particion
+        particion.append(x_4)
+    elif decision_1 == False:
+        x_4 = x_3 - norma_de_la_particion
+        particion.append(x_4)
+elif norma_de_la_particion <= b-a and norma_de_la_particion >= b-x_3 and norma_de_la_particion <= x_3-a:
+    x_4 = x_3 - norma_de_la_particion
+    particion.append(x_4)
+elif norma_de_la_particion <= b-a and norma_de_la_particion <= b-x_3 and norma_de_la_particion >= x_3-a:
+    x_4 = x_3 + norma_de_la_particion
+    particion.append(x_4)
+print(particion)
+elementos_que_restan_de_la_particion = cantidad_elementos_partición-4
+
+for i in range(elementos_que_restan_de_la_particion):
+    decision_2 = rand.choice([True, False])
+    if x_4 <= x_3: 
+        if decision_2 == True:
+            x_i = rand.uniform(x_3,b)
+            particion.append(x_i)
+        elif decision_2 == False:
+            x_i = rand.uniform(a,x_4)
+            particion.append(x_i)
+    elif x_4 >= x_3:
+        if decision_2 == True:
+            x_i = rand.uniform(x_4,b)
+            particion.append(x_i)
+        elif decision_2 == False:
+            x_i = rand.uniform(a,x_3)
+            particion.append(x_i)
+
+particion.sort()
+
+elementos_de_Riemann=[]
+print(len(particion))
+for i in range(cantidad_elementos_partición-1):
+    r_i = rand.uniform(particion[i],particion[i+1])
+    elementos_de_Riemann.append(r_i)
+    
+######dibujo de las sumas.
+
+Cero_1=[]
+for i in range(cantidad_elementos_partición):
+    Cero_1.append(0)
+    
+Cero_2=[]
+for i in range(len(elementos_de_Riemann)):
+    Cero_2.append(0)
+    
+Z=np.arange(a,b,0.01)
+W=[np.sin(x**2) for x in Z]
+
+C.plot(Z,W)
+D.plot(Z,W)
+
+
+
+ñ=0
+o=0
+
+for k in elementos_de_Riemann:
+    rect_riemann_i = matplotlib.patches.Rectangle((particion[ñ],0), particion[ñ+1]-particion[ñ] , np.sin(k**2), color='chartreuse', ec = 'black')
+    C.vlines(k,ymin = 0, ymax = np.sin(k**2), linewidth = 0.6, color = 'black')
+    C.add_patch(rect_riemann_i)
+    ñ+=1
+for k in elementos_de_Riemann:
+    rect_riemann_i = matplotlib.patches.Rectangle((particion[o],0), particion[o+1]-particion[o] , np.sin(k**2), color='chartreuse')
+    D.add_patch(rect_riemann_i)
+    o+=1
+
+C.scatter(particion, Cero_1, c='red',marker='.',linewidth = 0.1)
+D.scatter(particion, Cero_1, c='red',marker='.',linewidth = 0.1)
+
+C.scatter(elementos_de_Riemann, Cero_2, c='blue',marker='.',linewidth = 1)
+D.scatter(elementos_de_Riemann, Cero_2, c='blue',marker='.',linewidth = 1)
+
+
+
